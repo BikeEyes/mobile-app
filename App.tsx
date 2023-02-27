@@ -1,18 +1,27 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { Provider as PaperProvider } from "react-native-paper";
+import { NavigationContainer, DefaultTheme } from "@react-navigation/native";
+
+import Navigator from "./src/navigation";
+
+import { BleManagerContext } from "./src/ble/bleManagerContext";
 
 export default function App() {
+  const DarkTheme = {
+    ...DefaultTheme,
+    colors: {
+      ...DefaultTheme.colors,
+      background: "#000",
+      text: "#fff",
+    },
+  };
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-    </View>
+    <BleManagerContext.Provider value={null}>
+      <PaperProvider>
+        <NavigationContainer theme={DarkTheme}>
+          <Navigator />
+        </NavigationContainer>
+      </PaperProvider>
+    </BleManagerContext.Provider>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});

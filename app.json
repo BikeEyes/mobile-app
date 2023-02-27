@@ -1,0 +1,17 @@
+{
+  "expo": {
+    "name": "open-radar-app",
+    "slug": "open-radar-app",
+    "version": "1.0.0",
+    "sdkVersion": "47.0.0",
+    "platforms": [
+      "android"
+    ],
+    "plugins": [
+      "with-rn-bluetooth-classic"
+    ],
+    "android": {
+      "package": "com.anonymous.openradarapp"
+    }
+  }
+}
