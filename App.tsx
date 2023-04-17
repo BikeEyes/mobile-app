@@ -1,27 +1,20 @@
 import { Provider as PaperProvider } from "react-native-paper";
-import { NavigationContainer, DefaultTheme } from "@react-navigation/native";
+import { NavigationContainer } from "@react-navigation/native";
+import { ThemeProvider } from "styled-components/native";
 
 import Navigator from "./src/navigation";
-
-import { BleManagerContext } from "./src/ble/bleManagerContext";
+import { useGlobalTheme } from "./src/theme/useGlobalTheme";
 
 export default function App() {
-  const DarkTheme = {
-    ...DefaultTheme,
-    colors: {
-      ...DefaultTheme.colors,
-      background: "#000",
-      text: "#fff",
-    },
-  };
+  const globalTheme = useGlobalTheme();
 
   return (
-    <BleManagerContext.Provider value={null}>
-      <PaperProvider>
-        <NavigationContainer theme={DarkTheme}>
+    <PaperProvider theme={globalTheme}>
+      <ThemeProvider theme={globalTheme}>
+        <NavigationContainer>
           <Navigator />
         </NavigationContainer>
-      </PaperProvider>
-    </BleManagerContext.Provider>
+      </ThemeProvider>
+    </PaperProvider>
   );
 }

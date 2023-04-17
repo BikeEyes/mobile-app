@@ -1,15 +1,17 @@
-import { useCallback, useMemo, useState } from "react";
-import { View, Text } from "react-native";
+import { useMemo, useState } from "react";
+import { Text } from "react-native";
 import { StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
-import * as s from "./styles";
+import * as s from "./index.styled";
+import ConnectionStatus from "../../components/ConnectionStatus";
+import { ConnectionStatus as ConnectionStatusEnum } from "../../connectionManager/module";
+import { FlexRow } from "../../components/Flex";
 
 const HomeScreen = () => {
-  const [isConnected, setIsConnected] = useState(true);
   const [data, setData] = useState({
-    distance: 15,
-    relSpeed: 40,
+    distance: 40,
+    relSpeed: 120,
   });
 
   const bikerStatus = useMemo(() => {
@@ -28,13 +30,9 @@ const HomeScreen = () => {
 
   return (
     <s.Container>
-      <s.ConnectionStatusContainer isConnected={isConnected}>
-        {!isConnected && (
-          <SafeAreaView>
-            <Text>Not connected</Text>
-          </SafeAreaView>
-        )}
-      </s.ConnectionStatusContainer>
+      <FlexRow>
+        <ConnectionStatus connectionStatus={ConnectionStatusEnum.CONNECTED} />
+      </FlexRow>
       <s.BikerContainer status={bikerStatus}>
         <Icon name="bicycle" size={48} />
       </s.BikerContainer>
@@ -50,14 +48,5 @@ const HomeScreen = () => {
     </s.Container>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});
 
 export default HomeScreen;
