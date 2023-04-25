@@ -1,39 +1,20 @@
 import { useMemo } from "react";
-import AnalyticsScreen from "../../screens/analytics";
-import HomeScreen from "../../screens/home";
-import SettingsScreen from "../../screens/settings";
-import Icon from "react-native-vector-icons/MaterialIcons";
+import { Routes } from "../routes";
+import TabsNavigator from "../Tabs";
+import DevicesScreen from "../../screens/devices";
 
 const useNavigationScreens = () => {
   return useMemo(
     () => ({
       stack: [
         {
-          name: "Home",
-          component: HomeScreen,
-          options: {
-            tabBarIcon: ({ color }) => (
-              <Icon name="home" color={color} size={26} />
-            ),
-          },
+          name: Routes.TABS,
+          component: TabsNavigator,
+          options: { headerShown: false },
         },
         {
-          name: "Analytics",
-          component: AnalyticsScreen,
-          options: {
-            tabBarIcon: ({ color }) => (
-              <Icon name="analytics" color={color} size={26} />
-            ),
-          },
-        },
-        {
-          name: "Settings",
-          component: SettingsScreen,
-          options: {
-            tabBarIcon: ({ color }) => (
-              <Icon name="settings" color={color} size={26} />
-            ),
-          },
+          name: Routes.BT_DEVICES,
+          component: DevicesScreen,
         },
       ],
     }),

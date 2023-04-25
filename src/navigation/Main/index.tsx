@@ -1,7 +1,7 @@
-import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 import useNavigationScreens from "./useNavigationScreens";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
-const MainStack = createMaterialBottomTabNavigator();
+const MainStack = createNativeStackNavigator();
 
 const MainNavigator = () => {
   const screens = useNavigationScreens();

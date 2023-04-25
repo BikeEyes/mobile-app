@@ -3,44 +3,32 @@ import { StyleSheet } from "react-native";
 import RNBluetoothClassic, {
   BluetoothDevice,
   BluetoothDeviceEvent,
+  BluetoothEventSubscription,
   BluetoothNativeDevice,
 } from "react-native-bluetooth-classic";
-import { PermissionsAndroid } from "react-native";
-import { useEffect, useState } from "react";
-import { Button, TextInput } from "react-native-paper";
+import { useContext, useEffect, useState } from "react";
+import { Button } from "react-native-paper";
+import { useNavigation } from "@react-navigation/native";
+import { Routes } from "../../navigation/routes";
+import { ConnectionManagerContext } from "../../Context/connectionManager/context";
+import { RadarContext } from "../../Context/radar/context";
 
-const SettingsScreen = () => {
+const SettingsScreen = ({}) => {
+  const navigation = useNavigation();
+  const { connectionManager, setConnectionManager } = useContext(
+    ConnectionManagerContext
+  );
+  const { setRadar } = useContext(RadarContext);
   const [connection, setConnection] = useState(null);
   const [device, setDevice] = useState<BluetoothDevice>(null);
   const [devices, setDevices] = useState<BluetoothDevice[]>([]);
 
-  const requestAccessFineLocationPermission = async () => {
-    const granted = await PermissionsAndroid.request(
-      PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-      {
-        title: "Access fine location required for discovery",
-        message:
-          "In order to perform discovery, you must enable/allow " +
-          "fine location access.",
-        buttonNeutral: 'Ask Me Later"',
-        buttonNegative: "Cancel",
-        buttonPositive: "OK",
-      }
-    );
-    return granted === PermissionsAndroid.RESULTS.GRANTED;
-  };
-
   const startDiscovery = async () => {
     console.log(`Starting discovery...`);
     try {
-      const granted = await requestAccessFineLocationPermission();
       const paired = await RNBluetoothClassic.getBondedDevices();
 
       setDevices(paired);
-
-      if (!granted) {
-        throw new Error(`Access fine location was not granted`);
-      }
 
       try {
         const unpaired = await RNBluetoothClassic.startDiscovery();
@@ -60,6 +48,7 @@ const SettingsScreen = () => {
           `Device connected: ${(event as BluetoothNativeDevice).name}`
         );
         setConnection(true);
+        setConnectionManager({ ...connectionManager, isConnected: true });
       }
     );
     const sub2 = RNBluetoothClassic.onDeviceDisconnected(
@@ -69,6 +58,12 @@ const SettingsScreen = () => {
         );
         setConnection(false);
         setDevice(null);
+
+        setConnectionManager({
+          ...connectionManager,
+          currentDevice: null,
+          isConnected: false,
+        });
       }
     );
 
@@ -78,21 +73,31 @@ const SettingsScreen = () => {
     };
   }, []);
 
-  // useEffect(() => {
-  //   if (connection && device) {
-  //     device.onDataReceived((data) => {
-  //       console.log(`Received data: ${data}`);
-  //     });
-  //   }
-  // }, [connection, device]);
+  useEffect(() => {
+    let subscription: BluetoothEventSubscription | null = null;
 
-  const [last, setLast] = useState(0);
+    if (device)
+      subscription = device.onDataReceived((data) => {
+        console.log(`Data received: ${data.data}`);
+        const values = data.data;
+        if (!values)
+          setRadar({
+            relativeSpeed: 0,
+            distance: 0,
+          });
+        else {
+          const [distance, relativeSpeed] = values.split(",");
+          setRadar({
+            relativeSpeed: Number(relativeSpeed),
+            distance: Number(distance),
+          });
+        }
+      });
 
-  // useEffect(() => {
-  //   device?.onDataReceived((data) => {
-  //     console.log(`Received data: ${data}`);
-  //   });
-  // }, [device]);
+    return () => {
+      subscription?.remove();
+    };
+  }, [device]);
 
   const renderItem = ({ item }: { item: BluetoothDevice }) => {
     return (
@@ -102,8 +107,12 @@ const SettingsScreen = () => {
           mode="contained"
           onPress={() => {
             item
-              .connect()
+              .connect({})
               .then((connection) => {
+                setConnectionManager((prev) => ({
+                  ...prev,
+                  isConnected: true,
+                }));
                 setConnection(true);
                 setDevice(item);
               })
@@ -121,19 +130,9 @@ const SettingsScreen = () => {
     );
   };
 
-  const [message, setMessage] = useState<string>("");
-
-  const send = () => {
-    device?.write(message).then((data) => {
-      console.log("Message sent");
-      setMessage("");
-    });
-  };
-
   return (
     <View style={styles.container}>
-      <Text>Settings Screen</Text>
-      <FlatList renderItem={renderItem} data={devices}></FlatList>
+      <FlatList renderItem={renderItem} data={devices} />
 
       <View style={styles.currentDevice}>
         <Text>Connected to:</Text>
@@ -167,16 +166,28 @@ const SettingsScreen = () => {
           Stop discovery
         </Button>
       </View>
-      <View style={styles.currentDevice}>
-        <TextInput
-          style={styles.input}
-          value={message}
-          onChangeText={(text) => setMessage(text)}
-        />
-        <Button mode="contained" onPress={send}>
-          Send
-        </Button>
-      </View>
+      <Button
+        onPress={() => {
+          device
+            ?.write("Hello world!")
+            .then(() => {
+              console.log(`Data sent.`);
+            })
+            .catch((error) => {
+              console.log(`Error sending data: ${error.message}`);
+            });
+        }}
+      >
+        Send
+      </Button>
+      <Button
+        mode="contained"
+        onPress={() => {
+          navigation.navigate(Routes.BT_DEVICES as never);
+        }}
+      >
+        OPEN SETTINGS
+      </Button>
     </View>
   );
 };

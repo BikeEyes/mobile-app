@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 
+import { Routes } from "./routes";
 import MainNavigator from "./Main";
 
 const useNavigationScreens = () => {
@@ -7,7 +8,7 @@ const useNavigationScreens = () => {
     () => ({
       stack: [
         {
-          name: "Main",
+          name: Routes.MAIN,
           component: MainNavigator,
         },
       ],

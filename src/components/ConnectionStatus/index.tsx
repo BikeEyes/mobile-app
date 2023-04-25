@@ -2,7 +2,7 @@ import { memo } from "react";
 import {
   ConnectionStatusType,
   ConnectionStatus as ConnectionStatusEnum,
-} from "../../connectionManager/module";
+} from "../../Context/connectionManager/module";
 
 import { ConnectionDot, ThemeText } from "./index.styled";
 

@@ -9,10 +9,38 @@
     },
     "version": "1.0.0",
     "sdkVersion": "47.0.0",
-    "platforms": ["android"],
-    "plugins": ["with-rn-bluetooth-classic"],
+    "platforms": [
+      "android"
+    ],
+    "plugins": [
+      [
+        "with-rn-bluetooth-classic",
+        {
+          "peripheralUsageDescription": "Allow myDevice to check bluetooth peripheral info",
+          "alwaysUsageDescription": "Allow myDevice to always use bluetooth info",
+          "protocols": [
+            "com.myCompany.p1",
+            "com.myCompany.p2"
+          ]
+        }
+      ]
+    ],
     "android": {
-      "package": "com.openradar.openradarapp"
+      "package": "com.openradar.openradarapp",
+      "permissions": [
+        "ACCESS_FINE_LOCATION",
+        "android.permission.BLUETOOTH",
+        "android.permission.BLUETOOTH_ADMIN",
+        "android.permission.ACCESS_FINE_LOCATION",
+        "android.permission.BLUETOOTH_CONNECT",
+        "android.permission.BLUETOOTH_SCAN",
+        "android.permission.BLUETOOTH_ADVERTISE"
+      ]
+    },
+    "extra": {
+      "eas": {
+        "projectId": "1de45d19-5bd4-4836-b8fb-1182c2806b1e"
+      }
     }
   }
 }

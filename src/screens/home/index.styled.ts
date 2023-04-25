@@ -1,4 +1,5 @@
 import styled from "styled-components/native";
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
 export const Container = styled.View`
   flex: 1;
@@ -29,7 +30,7 @@ export const CarViewContainer = styled.View`
   flex: 1;
   align-items: center;
   height: 100%;
-  background-color: #000;
+  background-color: ${({ theme }) => theme.colors.secondaryContainer};
 `;
 
 export const RoadContainer = styled.View`
@@ -39,7 +40,7 @@ export const RoadContainer = styled.View`
   position: absolute;
   border-left-width: 2px;
   border-right-width: 2px;
-  border-color: #fff;
+  border-color: ${({ theme }) => theme.colors.onSecondaryContainer};
 `;
 
 export const Car = styled.View<{
@@ -51,13 +52,24 @@ export const Car = styled.View<{
   position: absolute;
   justify-content: center;
   top: ${({ distance }) => distance}%;
+  color: ${({ theme }) => theme.colors.onSecondaryContainer};
 `;
 
 export const CarText = styled.Text`
   flex: 1;
-  color: #fff;
+  color: ${({ theme }) => theme.colors.onSecondaryContainer};
   font-size: 30px;
   font-weight: bold;
   align-self: center;
   text-align: center;
+`;
+
+export const CarIcon = styled(Icon)`
+  color: ${({ theme }) => theme.colors.onSecondaryContainer};
+  font-size: 48px;
+`;
+
+export const CyclistIcon = styled(Icon)`
+  color: ${({ theme }) => theme.colors.onPrimary};
+  font-size: 48px;
 `;
