@@ -3,5 +3,6 @@ export enum Routes {
   TABS = "Tabs",
   HOME = "Home",
   SETTINGS = "Settings",
-  BT_DEVICES = "BluetoothDevices",
+  BT_DEVICES = "Paired devices",
+  NEW_BT_DEVICE = "Pair new device",
 }

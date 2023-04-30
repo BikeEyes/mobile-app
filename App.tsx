@@ -10,6 +10,10 @@ import { ConnectionManagerContext } from "./src/Context/connectionManager/contex
 import { CMDefaultState } from "./src/Context/connectionManager/module";
 import { RCDefaultState } from "./src/Context/radar/module";
 import { RadarContext } from "./src/Context/radar/context";
+import { enableFreeze, enableScreens } from "react-native-screens";
+
+enableFreeze(true);
+enableScreens(true);
 
 export default function App() {
   const globalTheme = useGlobalTheme();

@@ -5,6 +5,10 @@ export enum ConnectionStatus {
   DISCONNECTED = "disconnected",
 }
 
+export interface CustomBluetoothDevice extends BluetoothDevice {
+  icon?: string;
+}
+
 export type ConnectionStatusType =
   (typeof ConnectionStatus)[keyof typeof ConnectionStatus];
 
@@ -16,7 +20,7 @@ export const CMDefaultState: ConnectionManagerContextProps = {
 };
 export interface ConnectionManagerContextProps {
   isConnected: boolean;
-  pairedDevices: BluetoothDevice[];
-  unPairedDevices: BluetoothDevice[];
-  currentDevice: BluetoothDevice | null;
+  pairedDevices: CustomBluetoothDevice[];
+  unPairedDevices: CustomBluetoothDevice[];
+  currentDevice: CustomBluetoothDevice | null;
 }

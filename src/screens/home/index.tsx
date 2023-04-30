@@ -12,8 +12,6 @@ const HomeScreen = () => {
   const { isConnected } = connectionManager;
   const { relativeSpeed, distance } = radar;
 
-  console.log(isConnected);
-
   const carPosition = useMemo(() => {
     const MAX_DST = 30;
     if (distance >= MAX_DST) return 93;

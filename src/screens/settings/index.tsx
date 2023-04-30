@@ -12,6 +12,7 @@ import { useNavigation } from "@react-navigation/native";
 import { Routes } from "../../navigation/routes";
 import { ConnectionManagerContext } from "../../Context/connectionManager/context";
 import { RadarContext } from "../../Context/radar/context";
+import { CustomBluetoothDevice } from "../../Context/connectionManager/module";
 
 const SettingsScreen = ({}) => {
   const navigation = useNavigation();
@@ -28,7 +29,18 @@ const SettingsScreen = ({}) => {
     try {
       const paired = await RNBluetoothClassic.getBondedDevices();
 
+      const pd = paired.map((device) => ({
+        ...device,
+        icon: device.name.toLowerCase().includes("radar")
+          ? "radar"
+          : "bluetooth",
+      }));
+
       setDevices(paired);
+      setConnectionManager({
+        ...connectionManager,
+        pairedDevices: pd as CustomBluetoothDevice[],
+      });
 
       try {
         const unpaired = await RNBluetoothClassic.startDiscovery();
@@ -59,6 +71,12 @@ const SettingsScreen = ({}) => {
         setConnection(false);
         setDevice(null);
 
+        setRadar((prev) => ({
+          ...prev,
+          relativeSpeed: 0,
+          distance: 0,
+        }));
+
         setConnectionManager({
           ...connectionManager,
           currentDevice: null,
@@ -78,7 +96,7 @@ const SettingsScreen = ({}) => {
 
     if (device)
       subscription = device.onDataReceived((data) => {
-        console.log(`Data received: ${data.data}`);
+        // console.log(`Data received: ${data.data}`);
         const values = data.data;
         if (!values)
           setRadar({
@@ -111,6 +129,7 @@ const SettingsScreen = ({}) => {
               .then((connection) => {
                 setConnectionManager((prev) => ({
                   ...prev,
+                  currentDevice: item,
                   isConnected: true,
                 }));
                 setConnection(true);
@@ -120,6 +139,11 @@ const SettingsScreen = ({}) => {
                 console.log(`Error connecting to device: ${error.message}`);
                 setConnection(false);
                 setDevice(null);
+                setConnectionManager((prev) => ({
+                  ...prev,
+                  currentDevice: null,
+                  isConnected: false,
+                }));
               });
           }}
           buttonColor="green"
