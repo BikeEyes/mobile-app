@@ -44,6 +44,7 @@ export const LightTheme = {
       connected: "rgb(40, 136, 76)",
       disconnected: "rgb(186, 26, 26)",
     },
+    carContainer: "rgb(213, 228, 247)",
   },
 };
 

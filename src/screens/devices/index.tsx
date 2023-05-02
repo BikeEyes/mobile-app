@@ -1,41 +1,68 @@
-import { memo, useContext, useEffect, useMemo } from "react";
-import { View, Text, FlatList } from "react-native";
+import { useContext, useMemo, useState } from "react";
+import { View, FlatList } from "react-native";
 import { ConnectionManagerContext } from "../../Context/connectionManager/context";
-import { RadarContext } from "../../Context/radar/context";
 import { List } from "react-native-paper";
 import { CustomBluetoothDevice } from "../../Context/connectionManager/module";
+import RNBluetoothClassic, {
+  BluetoothDevice,
+} from "react-native-bluetooth-classic";
+import { useGetDeviceIcon } from "../../Context/connectionManager/useConnectionManager";
 
 const Devices = () => {
+  const [refreshing, setRefreshing] = useState(false);
   const { connectionManager, setConnectionManager } = useContext(
     ConnectionManagerContext
   );
 
   const { currentDevice } = connectionManager;
 
-  const data = useMemo(() => {
-    return connectionManager.pairedDevices.map((device) => {
-      return {
-        ...device,
-        isCurrent: device.address === currentDevice?.address,
-      };
-    });
-  }, [connectionManager.pairedDevices, currentDevice]);
+  const getIcon = useGetDeviceIcon();
 
-  interface RenderDeviceProps extends CustomBluetoothDevice {
+  const RenderDevice = ({
+    item,
+    icon,
+    isCurrent,
+  }: {
+    item: CustomBluetoothDevice;
+    icon: string;
     isCurrent: boolean;
-  }
+  }) => {
+    const action = async () => {
+      try {
+        if (isCurrent) {
+          console.log(`Disconnecting from device: ${item.name}`);
+          await item.disconnect();
 
-  const RenderDevice = ({ item }: { item: RenderDeviceProps }) => {
+          setConnectionManager({
+            ...connectionManager,
+            currentDevice: null,
+            isConnected: false,
+          });
+        } else {
+          console.log(`Connecting to device: ${item.name}`);
+          const connected = await item.connect();
+          if (connected) {
+            setConnectionManager({
+              ...connectionManager,
+              currentDevice: item,
+              isConnected: true,
+            });
+          }
+        }
+      } catch (err) {
+        console.log(`Error connecting to device: ${err.message}`);
+      }
+    };
+
     return (
       <List.Item
         title={item.name}
         description={item.address}
         key={item.id}
-        left={(props) => (
-          <List.Icon {...props} icon={item.icon ? item.icon : "bluetooth"} />
-        )}
+        onPress={action}
+        left={(props) => <List.Icon {...props} icon={icon} />}
         right={(props) => (
-          <List.Icon {...props} icon={item.isCurrent ? "link-off" : ""} />
+          <List.Icon {...props} icon={isCurrent ? "link-off" : ""} />
         )}
       />
     );
@@ -44,11 +71,30 @@ const Devices = () => {
   return (
     <View>
       <FlatList
-        data={data}
-        // @ts-ignore TODO: Fix type error
-        renderItem={RenderDevice}
+        data={connectionManager.pairedDevices}
+        // @ts-ignore TODO: Fix this type error
+        renderItem={({ item }) =>
+          RenderDevice({
+            item,
+            icon: getIcon(item.name),
+            isCurrent: item.address === currentDevice?.address,
+          })
+        }
         keyExtractor={(item) => item.id}
-        extraData={currentDevice}
+        onRefresh={async () => {
+          setRefreshing(true);
+          try {
+            const paired = await RNBluetoothClassic.getBondedDevices();
+            setConnectionManager((prev) => ({
+              ...prev,
+              pairedDevices: paired,
+            }));
+          } catch (error) {
+            console.log("Error getting paired devices", error);
+          }
+          setRefreshing(false);
+        }}
+        refreshing={refreshing}
       />
     </View>
   );

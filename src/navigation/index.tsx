@@ -7,7 +7,9 @@ const Navigator = () => {
   const screens = useNavigationScreens();
 
   return (
-    <RootStack.Navigator screenOptions={{ headerShown: false }}>
+    <RootStack.Navigator
+      screenOptions={{ headerShown: false, statusBarColor: "black" }}
+    >
       {screens.stack.map((screen) => (
         <RootStack.Screen {...screen} key={screen.name} />
       ))}

@@ -5,8 +5,11 @@ import { ConnectionStatus as ConnectionStatusEnum } from "../../Context/connecti
 import { FlexRow } from "../../components/Flex";
 import { RadarContext } from "../../Context/radar/context";
 import { ConnectionManagerContext } from "../../Context/connectionManager/context";
+import { useOnDataReceived } from "../../Context/connectionManager/useConnectionManager";
 
 const HomeScreen = () => {
+  useOnDataReceived();
+
   const { radar } = useContext(RadarContext);
   const { connectionManager } = useContext(ConnectionManagerContext);
   const { isConnected } = connectionManager;

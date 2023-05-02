@@ -44,6 +44,7 @@ export const DarkTheme = {
       connected: "rgb(40, 136, 76)",
       disconnected: "rgb(186, 26, 26)",
     },
+    carContainer: "rgb(0, 0, 0)",
   },
 };
 

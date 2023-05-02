@@ -5,7 +5,7 @@ export enum ConnectionStatus {
   DISCONNECTED = "disconnected",
 }
 
-export interface CustomBluetoothDevice extends BluetoothDevice {
+export class CustomBluetoothDevice extends BluetoothDevice {
   icon?: string;
 }
 

@@ -3,7 +3,7 @@ import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
 export const Container = styled.View`
   flex: 1;
-  background-color: ${({ theme }) => theme.colors.onPrimary};
+  background-color: ${({ theme }) => theme.colors.carContainer};
   height: 100%;
 `;
 
@@ -30,7 +30,7 @@ export const CarViewContainer = styled.View`
   flex: 1;
   align-items: center;
   height: 100%;
-  background-color: ${({ theme }) => theme.colors.secondaryContainer};
+  background-color: ${({ theme }) => theme.colors.carContainer};
 `;
 
 export const RoadContainer = styled.View`
@@ -70,6 +70,6 @@ export const CarIcon = styled(Icon)`
 `;
 
 export const CyclistIcon = styled(Icon)`
-  color: ${({ theme }) => theme.colors.onPrimary};
+  color: ${({ theme }) => theme.colors.onSecondaryContainer};
   font-size: 48px;
 `;
