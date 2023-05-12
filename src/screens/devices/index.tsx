@@ -3,9 +3,7 @@ import { View, FlatList } from "react-native";
 import { ConnectionManagerContext } from "../../Context/connectionManager/context";
 import { List } from "react-native-paper";
 import { CustomBluetoothDevice } from "../../Context/connectionManager/module";
-import RNBluetoothClassic, {
-  BluetoothDevice,
-} from "react-native-bluetooth-classic";
+import RNBluetoothClassic from "react-native-bluetooth-classic";
 import { useGetDeviceIcon } from "../../Context/connectionManager/useConnectionManager";
 
 const Devices = () => {

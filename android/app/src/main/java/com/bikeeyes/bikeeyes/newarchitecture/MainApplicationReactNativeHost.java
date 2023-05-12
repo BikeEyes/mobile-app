@@ -1,4 +1,4 @@
-package com.openradar.openradarapp.newarchitecture;
+package com.bikeeyes.bikeeyes.newarchitecture;
 
 import android.app.Application;
 import androidx.annotation.NonNull;
@@ -20,9 +20,9 @@ import com.facebook.react.fabric.EmptyReactNativeConfig;
 import com.facebook.react.fabric.FabricJSIModuleProvider;
 import com.facebook.react.fabric.ReactNativeConfig;
 import com.facebook.react.uimanager.ViewManagerRegistry;
-import com.openradar.openradarapp.BuildConfig;
-import com.openradar.openradarapp.newarchitecture.components.MainComponentsRegistry;
-import com.openradar.openradarapp.newarchitecture.modules.MainApplicationTurboModuleManagerDelegate;
+import com.bikeeyes.bikeeyes.BuildConfig;
+import com.bikeeyes.bikeeyes.newarchitecture.components.MainComponentsRegistry;
+import com.bikeeyes.bikeeyes.newarchitecture.modules.MainApplicationTurboModuleManagerDelegate;
 import java.util.ArrayList;
 import java.util.List;
 

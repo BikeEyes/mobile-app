@@ -1,4 +1,4 @@
-package com.openradar.openradarapp;
+package com.bikeeyes.bikeeyes;
 
 import android.os.Build;
 import android.os.Bundle;

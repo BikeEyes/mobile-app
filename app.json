@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "Open Radar",
+    "name": "BikeEyes",
     "slug": "open-radar-app",
     "icon": "./assets/icon.png",
     "androidStatusBar": {
@@ -9,24 +9,19 @@
     },
     "version": "1.0.0",
     "sdkVersion": "47.0.0",
-    "platforms": [
-      "android"
-    ],
+    "platforms": ["android"],
     "plugins": [
       [
         "with-rn-bluetooth-classic",
         {
           "peripheralUsageDescription": "Allow myDevice to check bluetooth peripheral info",
           "alwaysUsageDescription": "Allow myDevice to always use bluetooth info",
-          "protocols": [
-            "com.myCompany.p1",
-            "com.myCompany.p2"
-          ]
+          "protocols": ["com.myCompany.p1", "com.myCompany.p2"]
         }
       ]
     ],
     "android": {
-      "package": "com.openradar.openradarapp",
+      "package": "com.bikeeyes.bikeeyes",
       "permissions": [
         "ACCESS_FINE_LOCATION",
         "android.permission.BLUETOOTH",

@@ -1,19 +1,31 @@
-# Open Radar App
-
-<p>
-  <!-- iOS -->
-  <img alt="Supports Expo iOS" longdesc="Supports Expo iOS" src="https://img.shields.io/badge/iOS-4630EB.svg?style=flat-square&logo=APPLE&labelColor=999999&logoColor=fff" />
-  <!-- Android -->
-  <img alt="Supports Expo Android" longdesc="Supports Expo Android" src="https://img.shields.io/badge/Android-4630EB.svg?style=flat-square&logo=ANDROID&labelColor=A4C639&logoColor=fff" />
-
-</p>
-
+# BikeEyes App
 
 ## 🚀 How to use
 
+### Install dependencies
+
 ```bash
-npx expo run:android
+npm install
 ```
 
+###  Prebuild the app to enable native code
+
+Expo does not support Bluetooth in the Expo Go app. To enable Bluetooth, you need to prebuild the app.
+
+```bash
+npm run prebuild:android
+```
+
+###  Run the app (development mode)
+
+```bash
+npm run android
+```
+
+### Build the apk
+
+```bash
+npm run build:apk
+```
 
 ## 📝 Notes

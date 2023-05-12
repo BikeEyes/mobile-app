@@ -62,28 +62,20 @@ export const useGetDeviceIcon = () => {
   }, []);
 };
 
-export const useGetPairedDevices = () => {
+export const useGetPairedDevices = async () => {
   const { setConnectionManager, connectionManager } = useContext(
     ConnectionManagerContext
   );
 
-  return useEffect(() => {
-    const func = async () => {
-      try {
-        const paired = await RNBluetoothClassic.getBondedDevices();
-        setConnectionManager((prev) => ({
-          ...prev,
-          pairedDevices: paired,
-        }));
-      } catch (error) {
-        console.log("Error getting paired devices", error);
-      }
-    };
-
-    func();
-
-    return () => {};
-  }, []);
+  try {
+    const paired = await RNBluetoothClassic.getBondedDevices();
+    setConnectionManager((prev) => ({
+      ...prev,
+      pairedDevices: paired,
+    }));
+  } catch (error) {
+    console.log("Error getting paired devices", error);
+  }
 };
 
 export const useGetUnpairedDevices = () => {
@@ -109,12 +101,3 @@ export const useGetUnpairedDevices = () => {
     return () => {};
   }, []);
 };
-
-export const useConnectionManager = () => {
-  const { connectionManager } = useContext(ConnectionManagerContext);
-  const { currentDevice } = connectionManager;
-
-  const getDeviceIcon = useGetDeviceIcon();
-};
-
-export default useConnectionManager;

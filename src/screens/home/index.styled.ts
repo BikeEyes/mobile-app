@@ -55,6 +55,16 @@ export const Car = styled.View<{
   color: ${({ theme }) => theme.colors.onSecondaryContainer};
 `;
 
+export const TextContainer = styled.View`
+  flex: 1;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+`;
+
 export const CarText = styled.Text`
   flex: 1;
   color: ${({ theme }) => theme.colors.onSecondaryContainer};
