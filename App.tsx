@@ -25,6 +25,7 @@ enableScreens(true);
 
 export default function App() {
   const requestPermissions = useGetBTClassicPermissions();
+  const globalTheme = useGlobalTheme();
 
   const [connectionManager, setConnectionManager] = useState(CMDefaultState);
   const [radar, setRadar] = useState(RCDefaultState);
@@ -45,26 +46,6 @@ export default function App() {
   }, []);
 
   useEffect(() => {
-    AsyncStorage.setItem("settings", JSON.stringify(settings))
-      .then(() => {
-        setNotification({
-          ...notification,
-          message: "Settings saved",
-          active: true,
-          type: NotificationTypes.success,
-        });
-      })
-      .catch((e) => {
-        setNotification({
-          ...notification,
-          message: `Error saving settings ${e}`,
-          active: true,
-          type: NotificationTypes.error,
-        });
-      });
-  }, [settings]);
-
-  useEffect(() => {
     if (connectionManager.isConnected) {
       setNotification({
         message: `Connected to ${connectionManager.currentDevice?.name}`,
@@ -81,14 +62,14 @@ export default function App() {
     }
   }, [connectionManager.isConnected]);
 
-  const globalTheme = useGlobalTheme();
-
   return (
-    <SettingsContext.Provider value={{ setSettings, settings }}>
-      <NotificationContext.Provider value={{ notification, setNotification }}>
-        <PaperProvider theme={globalTheme}>
-          <ThemeProvider theme={globalTheme}>
-            <NavigationContainer>
+    <PaperProvider theme={globalTheme}>
+      <ThemeProvider theme={globalTheme}>
+        <NavigationContainer>
+          <SettingsContext.Provider value={{ setSettings, settings }}>
+            <NotificationContext.Provider
+              value={{ notification, setNotification }}
+            >
               <ConnectionManagerContext.Provider
                 value={{ connectionManager, setConnectionManager }}
               >
@@ -103,10 +84,10 @@ export default function App() {
                   </Snackbar>
                 </RadarContext.Provider>
               </ConnectionManagerContext.Provider>
-            </NavigationContainer>
-          </ThemeProvider>
-        </PaperProvider>
-      </NotificationContext.Provider>
-    </SettingsContext.Provider>
+            </NotificationContext.Provider>
+          </SettingsContext.Provider>
+        </NavigationContainer>
+      </ThemeProvider>
+    </PaperProvider>
   );
 }

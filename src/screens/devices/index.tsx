@@ -1,10 +1,11 @@
-import { useContext, useMemo, useState } from "react";
-import { View, FlatList } from "react-native";
+import { useContext, useState } from "react";
+import { FlatList } from "react-native";
 import { ConnectionManagerContext } from "../../Context/connectionManager/context";
 import { List } from "react-native-paper";
 import { CustomBluetoothDevice } from "../../Context/connectionManager/module";
 import RNBluetoothClassic from "react-native-bluetooth-classic";
 import { useGetDeviceIcon } from "../../Context/connectionManager/useConnectionManager";
+import * as s from "./index.styled";
 
 const Devices = () => {
   const [refreshing, setRefreshing] = useState(false);
@@ -67,7 +68,7 @@ const Devices = () => {
   };
 
   return (
-    <View>
+    <s.Container>
       <FlatList
         data={connectionManager.pairedDevices}
         // @ts-ignore TODO: Fix this type error
@@ -94,7 +95,7 @@ const Devices = () => {
         }}
         refreshing={refreshing}
       />
-    </View>
+    </s.Container>
   );
 };
 

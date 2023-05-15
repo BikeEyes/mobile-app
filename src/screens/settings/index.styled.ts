@@ -4,6 +4,7 @@ import { moderateScale, verticalScale } from "react-native-size-matters";
 
 export const Container = styled.View`
   flex: 1;
+  background-color: ${({ theme }) => theme.colors.background};
 `;
 
 export const Content = styled.View`
@@ -16,6 +17,7 @@ export const Title = styled.Text`
   padding-left: ${moderateScale(36)}px;
   padding-bottom: ${verticalScale(36)}px;
   font-size: ${moderateScale(36)}px;
+  color: ${({ theme }) => theme.colors.onBackground};
 `;
 
 export const SwitchContainer = styled.View`

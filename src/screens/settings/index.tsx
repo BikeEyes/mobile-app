@@ -39,6 +39,24 @@ const SettingsScreen = ({}) => {
   };
 
   useEffect(() => {
+    AsyncStorage.setItem("settings", JSON.stringify(settings))
+      .then(() => {
+        setNotification({
+          message: "Settings saved",
+          active: true,
+          type: NotificationTypes.success,
+        });
+      })
+      .catch((e) => {
+        setNotification({
+          message: `Error saving settings ${e}`,
+          active: true,
+          type: NotificationTypes.error,
+        });
+      });
+  }, [settings]);
+
+  useEffect(() => {
     const sub1 = RNBluetoothClassic.onDeviceConnected(
       (event: BluetoothDeviceEvent | BluetoothNativeDevice) => {
         console.log(
