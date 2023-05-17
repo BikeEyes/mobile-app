@@ -9,18 +9,25 @@ import { useOnDataReceived } from "../../Context/connectionManager/useConnection
 import { useKeepAwake } from "expo-keep-awake";
 import { Audio } from "expo-av";
 import { SettingsContext } from "../../Context/settings/context";
+import * as Clipboard from "expo-clipboard";
+import { FAB } from "react-native-paper";
+import { NotificationContext } from "../../Context/notifications/context";
+import { NotificationTypes } from "../../Context/notifications/module";
 
 const HomeScreen = () => {
   useKeepAwake();
   useOnDataReceived();
 
-  const { radar } = useContext(RadarContext);
+  const { setRadar, radar } = useContext(RadarContext);
   const [lastDistance, setLastDistance] = useState<number>(0);
   const [sound, setSound] = useState<Audio.Sound | undefined>(undefined);
   const { connectionManager } = useContext(ConnectionManagerContext);
+  const { setNotification } = useContext(NotificationContext);
   const { settings } = useContext(SettingsContext);
   const { isConnected } = connectionManager;
   const { relativeSpeed, distance } = radar;
+
+  const [activeMeassurement, setActiveMeassurement] = useState<boolean>(false);
 
   const carPosition = useMemo(() => {
     const MAX_DST = 30;
@@ -82,6 +89,33 @@ const HomeScreen = () => {
           </>
         )}
       </s.CarViewContainer>
+      {settings.enableMeasurements && (
+        <FAB
+          style={{ position: "absolute", margin: 16, right: 0, bottom: 0 }}
+          icon={activeMeassurement ? "stop" : "play"}
+          label={activeMeassurement ? "Stop" : "Start"}
+          onPress={async () => {
+            if (!activeMeassurement) {
+              setRadar({ ...radar, history: [] });
+            } else {
+              const preparedData = radar.history.reduce((acc, curr) => {
+                return `${acc}${curr.distance},${curr.relativeSpeed}\n`;
+              }, "");
+
+              await Clipboard.setStringAsync(preparedData);
+            }
+            setActiveMeassurement(!activeMeassurement);
+
+            activeMeassurement
+              ? setNotification({
+                  message: "Data copied to clipboard",
+                  active: true,
+                  type: NotificationTypes.success,
+                })
+              : undefined;
+          }}
+        />
+      )}
     </s.Container>
   );
 };

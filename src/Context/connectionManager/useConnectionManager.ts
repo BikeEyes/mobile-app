@@ -6,7 +6,7 @@ import { RadarContext } from "../radar/context";
 import { ConnectionManagerContext } from "./context";
 
 export const useOnDataReceived = () => {
-  const { setRadar } = useContext(RadarContext);
+  const { radar, setRadar } = useContext(RadarContext);
   const { connectionManager } = useContext(ConnectionManagerContext);
 
   const { currentDevice } = connectionManager;
@@ -19,14 +19,21 @@ export const useOnDataReceived = () => {
         const values = data.data;
         if (!values)
           setRadar({
+            ...radar,
             relativeSpeed: 0,
             distance: 0,
           });
         else {
           const [distance, relativeSpeed] = values.split(",");
+          const oldHistory = radar.history || [];
+          oldHistory.push({
+            relativeSpeed: Number(relativeSpeed),
+            distance: Number(distance),
+          });
           setRadar({
             relativeSpeed: Number(relativeSpeed),
             distance: Number(distance),
+            history: oldHistory,
           });
         }
       });
@@ -36,6 +43,7 @@ export const useOnDataReceived = () => {
       setRadar({
         relativeSpeed: 0,
         distance: 0,
+        history: [],
       });
     };
   }, [currentDevice]);

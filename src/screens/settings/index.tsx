@@ -200,6 +200,21 @@ const SettingsScreen = ({}) => {
             />
           )}
         />
+        <List.Item
+          title="Enable measurements"
+          description="Show record measurement on the radar screen"
+          right={(props) => (
+            <Switch
+              value={settings.enableMeasurements}
+              onValueChange={() =>
+                setSettings({
+                  ...settings,
+                  enableMeasurements: !settings.enableMeasurements,
+                })
+              }
+            />
+          )}
+        />
       </List.Section>
     </s.Container>
   );

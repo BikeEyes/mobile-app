@@ -3199,6 +3199,11 @@ expo-av@~13.0.3:
   resolved "https://registry.npmjs.org/expo-av/-/expo-av-13.0.3.tgz"
   integrity sha512-9SpXOjY2MUK+jCIL68EUro/aHBlbZ3B4cY1nRr2aTPfv/dLD3bXRZNTTtSwOgsHbuKO6XwjHgCoYbd9T0GcE4A==
 
+expo-clipboard@~4.0.1:
+  version "4.0.2"
+  resolved "https://registry.yarnpkg.com/expo-clipboard/-/expo-clipboard-4.0.2.tgz#1d7510f299e05b5f8e653db544aedac0eee402cf"
+  integrity sha512-Iq0k5JKrLk3YlD0ZGIcDPBzwdzw7qt7NWwn8JTtzhre/7oKyH8JPDAODAL9zMR5Jmahv+Uysn9Igsbp6Ttuu1Q==
+
 expo-constants@~14.0.0, expo-constants@~14.0.2:
   version "14.0.2"
   resolved "https://registry.npmjs.org/expo-constants/-/expo-constants-14.0.2.tgz"
